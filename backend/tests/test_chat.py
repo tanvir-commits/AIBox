@@ -59,6 +59,36 @@ def test_chat_turn_with_mocked_retrieval() -> None:
     assert len(body["citations"]) >= 1
 
 
+def test_chat_second_turn_merges_prior_user_text_for_retrieval() -> None:
+    captured: list[str] = []
+
+    def capture_retrieve(db, settings, q):  # noqa: ANN001
+        captured.append(q)
+        return []
+
+    with patch("app.api.chat.retrieve_chunks", side_effect=capture_retrieve):
+        with TestClient(app) as client:
+            h = _headers(client)
+            first = client.post(
+                "/api/chat",
+                headers=h,
+                json={"message": "stm32f405 datasheet timers"},
+            )
+            assert first.status_code == 200
+            sid = first.json()["session_id"]
+            assert "stm32f405" in captured[-1].lower()
+
+            second = client.post(
+                "/api/chat",
+                headers=h,
+                json={"session_id": sid, "message": "how many timers?"},
+            )
+            assert second.status_code == 200
+            merged = captured[-1].lower()
+            assert "stm32f405" in merged
+            assert "how many" in merged
+
+
 def test_chat_session_roundtrip() -> None:
     with patch("app.api.chat.retrieve_chunks", return_value=[]):
         with TestClient(app) as client:

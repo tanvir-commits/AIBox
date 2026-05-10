@@ -21,6 +21,7 @@ from app.schemas.chat import (
     Citation,
 )
 from app.providers.ollama_llm import OllamaLLMProvider
+from app.services.chat_context import rag_query_for_session
 from app.services.rag import CHITCHAT_REPLY, is_chitchat, mock_rag_answer, retrieve_chunks
 from app.services.rag_ollama import ollama_rag_answer
 
@@ -107,18 +108,20 @@ def chat_turn(
     if is_chitchat(body.message):
         reply, cites_raw = CHITCHAT_REPLY, []
     else:
-        chunks = retrieve_chunks(db, settings, body.message)
+        rag_question = rag_query_for_session(db, session.id, body.message)
+        chunks = retrieve_chunks(db, settings, rag_question)
         provider = settings.default_llm_provider.strip().lower()
         if provider == "ollama":
             reply, cites_raw = ollama_rag_answer(
-                body.message,
+                rag_question,
                 chunks,
                 min_overlap=settings.rag_min_token_overlap,
                 ollama=OllamaLLMProvider(settings),
+                latest_user_message=body.message,
             )
         else:
             reply, cites_raw = mock_rag_answer(
-                body.message,
+                rag_question,
                 chunks,
                 min_overlap=settings.rag_min_token_overlap,
             )

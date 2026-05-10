@@ -862,6 +862,13 @@ def retrieve_stm32_peripheral_chunks(
     if re.search(r"\bpwm\b|pulse\s*width\s*mod", low):
         text_filters.append(DocumentChunk.text.ilike("%PWM%"))
         text_filters.append(DocumentChunk.text.ilike("%TIMER%"))
+    if re.search(
+        r"\btimers?\b|\bgpt\b|\btimx\b|general-?purpose\s+timers?|advanced-?control\s+timers?",
+        low,
+    ):
+        text_filters.append(DocumentChunk.text.ilike("%TIM%"))
+        text_filters.append(DocumentChunk.text.ilike("%Timer%"))
+        text_filters.append(DocumentChunk.text.ilike("%GPT%"))
     if not text_filters:
         return []
 

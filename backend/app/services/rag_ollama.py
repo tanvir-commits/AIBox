@@ -26,6 +26,8 @@ Rules:
 - When you state a specific fact from a source, add an inline citation like [1] or [2] matching that source index.
 - Do not invent policies, figures, dates, pin names, or product behavior that are not explicit in the sources.
 - Do not cite or mention filenames inside the prose — only use [n] citations.
+- Do not ask the user which document or PDF they mean, and do not ask them to paste more context — use the
+  thread lines and sources you already have. If the latest message is vague, infer intent from earlier lines.
 - If the sources do not contain enough information for a grounded answer, reply with exactly:
   I could not find that in the indexed company documents.
 """
@@ -42,7 +44,13 @@ def _chunk_by_citation_lookup(hit: RAGHitOutcome, citations: list[dict]) -> dict
     return {cid: by_id[cid] for cid in (c["chunk_id"] for c in citations) if cid in by_id}
 
 
-def _build_user_prompt(question: str, citations: list[dict], chunks: dict[str, RetrievedChunk]) -> str | None:
+def _build_user_prompt(
+    question: str,
+    citations: list[dict],
+    chunks: dict[str, RetrievedChunk],
+    *,
+    latest_user_message: str | None,
+) -> str | None:
     blocks: list[str] = []
     for i, cd in enumerate(citations, start=1):
         cid = cd["chunk_id"]
@@ -56,7 +64,14 @@ def _build_user_prompt(question: str, citations: list[dict], chunks: dict[str, R
     if not blocks:
         return None
     body = "\n\n---\n\n".join(blocks)
-    return f"Question:\n{question}\n\nSources:\n{body}"
+    if latest_user_message and latest_user_message.strip() != question.strip():
+        qblock = (
+            f"Latest user message (answer this):\n{latest_user_message.strip()}\n\n"
+            f"Earlier user lines in this chat (context for retrieval):\n{question.strip()}"
+        )
+    else:
+        qblock = question.strip()
+    return f"Question:\n{qblock}\n\nSources:\n{body}"
 
 
 def ollama_rag_answer(
@@ -65,6 +80,7 @@ def ollama_rag_answer(
     *,
     min_overlap: int,
     ollama: OllamaChatClient,
+    latest_user_message: str | None = None,
 ) -> tuple[str, list[dict]]:
     out = evaluate_rag_for_answer(question, chunks, min_overlap=min_overlap)
     if out is None:
@@ -78,7 +94,12 @@ def ollama_rag_answer(
         return extractive_rag_answer_from_hit(question, hit)
 
     by_c = _chunk_by_citation_lookup(hit, citations)
-    user_prompt = _build_user_prompt(question, citations, by_c)
+    user_prompt = _build_user_prompt(
+        question,
+        citations,
+        by_c,
+        latest_user_message=latest_user_message,
+    )
     if user_prompt is None:
         return extractive_rag_answer_from_hit(question, hit)
 
