@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from app.core.config import Settings
 from app.models.document import Document
 from app.models.document_chunk import DocumentChunk
-from app.providers.mock_embedding import MockEmbeddingProvider
+from app.providers.embedding_provider import get_embedding_provider
 from app.services.qdrant_chunks import search_similar
 
 NOT_FOUND = "I could not find that in the indexed company documents."
@@ -749,7 +749,7 @@ def retrieve_chunks_vector(
     *,
     limit: int | None = None,
 ) -> list[RetrievedChunk]:
-    embedder = MockEmbeddingProvider()
+    embedder = get_embedding_provider(settings)
     vector = embedder.embed(question)
     lim = limit if limit is not None else settings.rag_top_k
     hits = search_similar(

@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from app.core.config import Settings
 from app.models.document import Document
 from app.models.document_chunk import DocumentChunk
-from app.providers.mock_embedding import MockEmbeddingProvider
+from app.providers.embedding_provider import get_embedding_provider
 from app.services.chunking import approx_token_count, pages_to_chunks
 from app.services.parsing import extract_pages, normalize_extension
 from app.services.qdrant_chunks import delete_document_vectors, upsert_chunks
@@ -54,7 +54,7 @@ def ingest_document(db: Session, settings: Settings, document_id: str) -> None:
         doc.status = "embedding"
         db.commit()
 
-        embedder = MockEmbeddingProvider()
+        embedder = get_embedding_provider(settings)
         points: list[tuple[str, list[float], dict]] = []
         rows: list[DocumentChunk] = []
 

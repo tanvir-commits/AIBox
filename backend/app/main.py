@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -12,9 +13,11 @@ from app.core.config import get_settings
 from app.db.base import Base
 from app.db.session import get_engine, get_session_local
 import app.models  # noqa: F401 — register ORM metadata on Base
-from app.providers.mock_embedding import MockEmbeddingProvider
+from app.providers.embedding_provider import get_embedding_provider
 from app.services.bootstrap import ensure_bootstrap_admin
 from app.services.qdrant_chunks import ensure_collection
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -22,7 +25,21 @@ async def lifespan(_app: FastAPI):
     settings = get_settings()
     engine = get_engine()
     Base.metadata.create_all(bind=engine)
-    ensure_collection(settings, MockEmbeddingProvider.dimensions)
+    embedder = get_embedding_provider(settings)
+    logger.info(
+        "embedding provider=%s model=%s dim=%s — if you changed embedding backends, "
+        "clear Qdrant data and re-ingest documents for consistent retrieval",
+        embedder.name,
+        getattr(embedder, "model_name", "n/a"),
+        embedder.dimensions,
+    )
+    ensure_collection(settings, embedder.dimensions)
+    try:
+        embedder.embed("__embedding_warmup__")
+    except Exception:
+        logger.exception(
+            "embedding warmup failed — first document ingest may also fail until the model loads",
+        )
     SessionLocal = get_session_local()
     db = SessionLocal()
     try:

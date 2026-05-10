@@ -10,7 +10,11 @@ class Settings(BaseSettings):
     database_url: str = "postgresql://privateai:privateai@localhost:5432/privateai"
     qdrant_url: str = "http://localhost:6333"
     default_llm_provider: str = "mock_llm"
+    # mock_embedding: tiny hash vectors (tests / dev). fastembed: ONNX MiniLM (recommended).
     default_embedding_provider: str = "mock_embedding"
+    embedding_model_name: str = "sentence-transformers/all-MiniLM-L6-v2"
+    # Must match the model output size (MiniLM is 384).
+    embedding_vector_size: int = 384
 
     # Local LLM via Ollama (https://ollama.com) — used when default_llm_provider == "ollama".
     # On Docker Desktop, host Ollama is often http://host.docker.internal:11434

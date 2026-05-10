@@ -20,7 +20,27 @@ def ensure_collection(settings: Settings, vector_size: int) -> None:
     name = settings.qdrant_collection
     existing = {c.name for c in client.get_collections().collections}
     if name in existing:
-        return
+        info = client.get_collection(collection_name=name)
+        vcfg = info.config.params.vectors
+        current_size: int | None = None
+        if isinstance(vcfg, dict):
+            for _k, vp in vcfg.items():
+                if hasattr(vp, "size"):
+                    current_size = int(vp.size)
+                    break
+        elif vcfg is not None and hasattr(vcfg, "size"):
+            current_size = int(vcfg.size)
+        if current_size is not None and current_size != vector_size:
+            logger.warning(
+                "recreating qdrant collection %s (vector size %s -> %s)",
+                name,
+                current_size,
+                vector_size,
+            )
+            client.delete_collection(collection_name=name)
+        elif current_size == vector_size:
+            return
+
     logger.info("creating qdrant collection %s dim=%s", name, vector_size)
     client.create_collection(
         collection_name=name,
