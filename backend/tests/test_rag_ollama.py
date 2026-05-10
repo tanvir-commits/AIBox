@@ -1,5 +1,5 @@
 from app.services.rag import NOT_FOUND, RetrievedChunk
-from app.services.rag_ollama import ollama_rag_answer
+from app.services.rag_ollama import _drop_not_found_when_cited, ollama_rag_answer
 
 
 class _FakeOllamaOK:
@@ -105,3 +105,10 @@ def test_ollama_rag_not_found_matches_extractive_pipeline() -> None:
     )
     assert reply == NOT_FOUND
     assert cites == []
+
+
+def test_drop_not_found_when_cited_removes_contradictory_refusal() -> None:
+    mixed = f"The supply range is 1.8V to 3.6V [1]. {NOT_FOUND}"
+    out = _drop_not_found_when_cited(mixed)
+    assert "1.8" in out
+    assert NOT_FOUND.lower() not in out.lower()

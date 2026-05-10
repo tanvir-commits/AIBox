@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import re
 from typing import Protocol
 
 from app.services.rag import (
@@ -32,11 +33,31 @@ Rules:
   give the count from that list (or say the sources only partially enumerate them) instead of refusing.
 - If the sources do not contain enough information for a grounded answer, reply with exactly:
   I could not find that in the indexed company documents.
+- Never use that “could not find” phrase in the same reply where you also give facts with [n] citations —
+  pick one: either answer from sources or refuse entirely.
 """
 
 
 class OllamaChatClient(Protocol):
     def chat(self, *, system: str, user: str) -> str: ...
+
+
+def _drop_not_found_when_cited(reply: str) -> str:
+    """LLMs sometimes echo NOT_FOUND after a good cited answer; strip that contradiction."""
+    if NOT_FOUND.lower() not in reply.lower():
+        return reply
+    if not re.search(r"\[\d+\]", reply):
+        return reply
+    kept: list[str] = []
+    for sent in re.split(r"(?<=[.!?])\s+", reply.strip()):
+        s = sent.strip()
+        if not s:
+            continue
+        if NOT_FOUND.lower() in s.lower() and len(s) <= 220:
+            continue
+        kept.append(sent.strip())
+    out = " ".join(kept).strip()
+    return out if out else reply
 
 
 def _chunk_by_citation_lookup(hit: RAGHitOutcome, citations: list[dict]) -> dict[str, RetrievedChunk]:
@@ -113,4 +134,5 @@ def ollama_rag_answer(
 
     if not reply:
         return extractive_rag_answer_from_hit(question, hit)
+    reply = _drop_not_found_when_cited(reply)
     return reply, citations
