@@ -169,9 +169,27 @@ def _overlap_score(question: str, chunk_text: str) -> int:
     if n:
         return n
     low = chunk_text.lower()
+    ql = question.lower()
     hits = 0
     for k in significant_keywords(question):
         if len(k) >= 4 and k in low:
+            hits += 1
+    # Datasheets say TIM1 / GPT, users say "timer(s)"; ADC12 vs "adc" token mismatch.
+    if hits == 0:
+        if re.search(r"\badc|adcs", ql) and re.search(
+            r"\badc\d*\b|analog[- ]to[- ]digital|\badc\b",
+            low,
+            re.I,
+        ):
+            hits += 2
+        if re.search(r"\btimers?\b|how\s+many\s+timer", ql) and re.search(
+            r"\btim[0-9]{1,2}\b|general-?purpose\s+timer|advanced-?control\s+timer|"
+            r"\bgpt\d?\b|\btimer\b",
+            low,
+            re.I,
+        ):
+            hits += 2
+        if re.search(r"\bpwm\b|pulse\s*width", ql) and re.search(r"\bpwm\b|\bccr\b|\btim[0-9]", low, re.I):
             hits += 1
     return hits
 
@@ -236,9 +254,11 @@ def _chunk_topic_coherent(question: str, chunk_text: str) -> bool:
         return _volt()
 
     if re.search(r"\badc\b|adcs", ql):
-        return "adc" in tl
+        return bool(re.search(r"\badc\d*\b|analog[- ]to[- ]digital", tl, re.I))
+    if re.search(r"\btimers?\b", ql):
+        return bool(re.search(r"\btim[0-9]{1,2}\b|\btimers?\b|\bgpt\d?\b", tl, re.I))
     if re.search(r"\bpwm\b", ql):
-        return "pwm" in tl or "timer" in tl
+        return "pwm" in tl or "timer" in tl or bool(re.search(r"\btim[0-9]", tl, re.I))
     if re.search(r"\bgpio\b", ql):
         return "gpio" in tl or bool(re.search(r"\bi/o\b|\bio\s", tl))
     if re.search(r"cryp|\baes\b|\bcrypto\b", ql):
@@ -312,6 +332,9 @@ def search_keywords_for_question(question: str) -> list[str]:
     if "adcs" in low.replace("'", "") and "adc" not in seen:
         out.append("ADC")
         seen.add("adc")
+    if re.search(r"\btimers?\b|how\s+many\s+timer", low) and "tim" not in seen:
+        out.append("TIM")
+        seen.add("tim")
     if _mentions_power_supply_question(question) or re.search(r"\bvdd\b|\bvbat\b", low):
         for token in ("VDD", "VBAT"):
             if token.lower() not in seen:
@@ -535,6 +558,12 @@ def pick_answer_chunk(question: str, ranked: list[RetrievedChunk]) -> RetrievedC
             if re.search(r"dm\d|ds\d|stm32", fl):
                 if "adc" in question.lower() and "adc" in tl:
                     b += 110.0
+                if re.search(r"\btimers?\b|tim\d|how\s+many\s+timer", question.lower()) and re.search(
+                    r"\btim[0-9]{1,2}\b|\bgpt\d?\b|general-?purpose\s+timer",
+                    tl,
+                    re.I,
+                ):
+                    b += 105.0
                 if re.search(r"\baes\b|crypt|encryption", question.lower()) and (
                     "cryp" in tl or "crypto" in tl or ("aes" in tl and "stm32" in tl)
                 ):
@@ -852,7 +881,7 @@ def retrieve_stm32_peripheral_chunks(
         Document.filename.ilike("%stm32%"),
     )
     text_filters: list = []
-    if re.search(r"\badc\b|adcs|a/?d\s*c", low):
+    if re.search(r"\badc\b|adcs|a/?d\s*c|how\s+many\s+adc", low):
         text_filters.append(DocumentChunk.text.ilike("%ADC%"))
         text_filters.append(DocumentChunk.text.ilike("%analog-to-digital%"))
     if re.search(r"\baes\b|crypt|encryption hardware|accelerator", low):
