@@ -1,0 +1,65 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-privateai}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-privateai}
+      POSTGRES_DB: ${POSTGRES_DB:-privateai}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U privateai -d privateai"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  qdrant:
+    image: qdrant/qdrant:v1.12.5
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      # Official image has no curl/wget; bash /dev/tcp checks the REST port is listening.
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/6333'"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+
+  backend:
+    build:
+      context: ./backend
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-privateai}:${POSTGRES_PASSWORD:-privateai}@postgres:5432/${POSTGRES_DB:-privateai}
+      QDRANT_URL: http://qdrant:6333
+      UPLOAD_ROOT: /data/uploads
+      JWT_SECRET: ${JWT_SECRET:-dev-insecure-change-me}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-admin@example.com}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:-changeme}
+      DEFAULT_LLM_PROVIDER: ${DEFAULT_LLM_PROVIDER:-mock_llm}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
+      OLLAMA_TIMEOUT_SECONDS: ${OLLAMA_TIMEOUT_SECONDS:-120}
+    volumes:
+      - backend_uploads:/data/uploads
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  qdrant_data:
+  backend_uploads:

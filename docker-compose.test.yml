@@ -1,0 +1,47 @@
+# Run integration tests against real Postgres + Qdrant in Compose.
+# Usage: docker compose -f docker-compose.test.yml run --rm --build backend-test
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: privateai
+      POSTGRES_PASSWORD: privateai
+      POSTGRES_DB: privateai
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U privateai -d privateai"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  qdrant:
+    image: qdrant/qdrant:v1.12.5
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/6333'"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+
+  backend-test:
+    build:
+      context: ./backend
+    environment:
+      STACK_TEST: "1"
+      DATABASE_URL: postgresql://privateai:privateai@postgres:5432/privateai
+      QDRANT_URL: http://qdrant:6333
+      UPLOAD_ROOT: /data/uploads
+      JWT_SECRET: test-jwt-secret-at-least-32-bytes-long
+      BOOTSTRAP_ADMIN_EMAIL: admin@example.com
+      BOOTSTRAP_ADMIN_PASSWORD: changeme
+    volumes:
+      - backend_test_uploads:/data/uploads
+    command: ["pytest", "-q", "-m", "integration"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+
+volumes:
+  backend_test_uploads:

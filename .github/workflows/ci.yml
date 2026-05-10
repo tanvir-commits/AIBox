@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  backend-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install and test
+        working-directory: backend
+        run: |
+          pip install -e ".[dev]"
+          pytest -q -m "not integration"
+
+  stack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Web install and build
+        working-directory: web
+        run: |
+          npm install
+          npm run build
+      - name: Docker Compose build
+        run: docker compose build
+      - name: Integration tests (Postgres + Qdrant + pytest)
+        run: docker compose -f docker-compose.test.yml run --rm --build backend-test

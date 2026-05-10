@@ -1,0 +1,1 @@
+"""PrivateAI Box backend application."""
