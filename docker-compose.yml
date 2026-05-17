@@ -1,3 +1,6 @@
+# Default: pull prebuilt app images from GHCR (see .env.example).
+# Local source build: docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -18,7 +21,6 @@ services:
     volumes:
       - qdrant_data:/qdrant/storage
     healthcheck:
-      # Official image has no curl/wget; bash /dev/tcp checks the REST port is listening.
       test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/6333'"]
       interval: 5s
       timeout: 5s
@@ -26,8 +28,8 @@ services:
       start_period: 15s
 
   backend:
-    build:
-      context: ./backend
+    image: ${PRIVATEAI_BACKEND_IMAGE:-ghcr.io/tanvir-commits/aibox-backend:latest}
+    pull_policy: missing
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -55,8 +57,8 @@ services:
         condition: service_healthy
 
   web:
-    build:
-      context: ./web
+    image: ${PRIVATEAI_WEB_IMAGE:-ghcr.io/tanvir-commits/aibox-web:latest}
+    pull_policy: missing
     ports:
       - "3000:3000"
     depends_on:

@@ -84,8 +84,8 @@ export function DocumentsPage() {
         <div>
           <h2 className="text-xl font-semibold">Documents</h2>
           <p className="mt-1 max-w-2xl text-sm text-zinc-400">
-            Upload PDF, DOCX, TXT, MD, or CSV files. Each file is hashed, parsed,
-            chunked, embedded with the mock provider, and indexed into Qdrant.
+            Upload PDF, DOCX, TXT, MD, or CSV (one file at a time). Each file is
+            hashed, parsed, chunked, embedded, and indexed for chat citations.
           </p>
         </div>
         {canWrite ? (

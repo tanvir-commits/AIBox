@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import httpx
 
 from app.core.config import Settings
@@ -48,13 +50,20 @@ class OllamaLLMProvider:
         )
 
 
+def fetch_ollama_tags(settings: Settings) -> dict[str, Any]:
+    """Raw JSON from Ollama `GET /api/tags` (installed models)."""
+    base = settings.ollama_base_url.rstrip("/")
+    with httpx.Client(timeout=15.0) as client:
+        r = client.get(f"{base}/api/tags")
+        r.raise_for_status()
+        data = r.json()
+    return data if isinstance(data, dict) else {}
+
+
 def ping_ollama(settings: Settings) -> dict[str, str | bool]:
     """Cheap reachability probe for `/api/tags` — does not validate the configured model."""
-    base = settings.ollama_base_url.rstrip("/")
     try:
-        with httpx.Client(timeout=5.0) as client:
-            r = client.get(f"{base}/api/tags")
-            r.raise_for_status()
+        fetch_ollama_tags(settings)
         return {"ok": True, "detail": "reachable"}
-    except (httpx.HTTPError, OSError) as exc:
+    except (httpx.HTTPError, OSError, ValueError, TypeError) as exc:
         return {"ok": False, "detail": str(exc)}

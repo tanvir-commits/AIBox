@@ -5,7 +5,9 @@ usage() {
   cat <<'EOF'
 Usage: dev_start.sh [options]
 
-Start the PrivateAI Box stack with Docker Compose (same as Phase 0 default).
+Start the PrivateAI Box stack with Docker Compose.
+
+For first-time testers, prefer: ./scripts/start.sh --build
 
 Options:
   --build     Pass --build to docker compose up

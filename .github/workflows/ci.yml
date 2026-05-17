@@ -31,7 +31,7 @@ jobs:
         run: |
           npm install
           npm run build
-      - name: Docker Compose build
-        run: docker compose build
+      - name: Docker Compose build (local dev compose)
+        run: docker compose -f docker-compose.yml -f docker-compose.dev.yml build
       - name: Integration tests (Postgres + Qdrant + pytest)
         run: docker compose -f docker-compose.test.yml run --rm --build backend-test

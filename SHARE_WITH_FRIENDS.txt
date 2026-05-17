@@ -1,0 +1,40 @@
+PrivateAI Box — Windows quick start (Docker Desktop already installed)
+================================================================================
+
+DOWNLOAD
+  https://github.com/tanvir-commits/AIBox/releases
+  Get: privateai-box-vX.X.X-windows.zip  (or clone the GitHub repo)
+
+YOU NEED
+  - Windows 10/11
+  - Docker Desktop installed AND running (whale icon — "Engine running")
+  - This folder (full project, including docker-compose.yml)
+  - ~8 GB free RAM for first start
+
+OPTION A — Double-click launcher (if PrivateAIBox.exe is in this folder)
+  1. Start Docker Desktop; wait until it is running.
+  2. Double-click PrivateAIBox.exe
+  3. First run downloads images (often 5–15 min; no compile on your PC).
+     Needs internet. Images: ghcr.io/tanvir-commits/aibox-backend + aibox-web
+  4. Browser opens http://localhost:3000
+  5. Login: admin@example.com  password: changeme
+  6. Documents → upload a .txt or .pdf → wait for status "indexed"
+  7. Chat → ask a question about that file
+  8. Stop: double-click is not enough — run PrivateAIBox.exe -stop
+     Or open PowerShell here: docker compose down
+
+OPTION B — No .exe (batch file)
+  1. Docker Desktop running
+  2. Double-click scripts\start-windows.bat
+  3. Same login and steps as above
+  4. Stop: docker compose down
+
+TROUBLESHOOT
+  - "Docker not running" → open Docker Desktop, wait, try again
+  - Port in use → close anything on ports 3000 or 8000
+  - Build errors → send your host the terminal output
+
+OPTIONAL: real AI chat (not required for testing)
+  - Install Ollama on Windows, pull a model
+  - Edit .env: DEFAULT_LLM_PROVIDER=ollama
+  - docker compose down && docker compose up -d --build

@@ -1,0 +1,10 @@
+# Local development: build images from source instead of pulling from GHCR.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+services:
+  backend:
+    build:
+      context: ./backend
+  web:
+    build:
+      context: ./web
