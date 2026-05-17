@@ -70,15 +70,21 @@ func runStart() int {
 		fmt.Println("Created .env from .env.example")
 	}
 
-	fmt.Println("Pulling images, then starting PrivateAI Box (docker compose pull && up -d)…")
-	fmt.Println("First run may take several minutes while images download.")
-	if err := composePull(root); err != nil {
-		fmt.Println("Failed to pull images:", err)
-		fmt.Println("If GHCR returns 404, push this repo to main once so CI publishes images.")
-		pause()
-		return 1
-	}
-	if err := composeUp(root); err != nil {
+	fmt.Println("Pulling images, then starting PrivateAI Box…")
+	fmt.Println("First run may take several minutes (download or local build).")
+	pullErr := composePull(root)
+	if pullErr != nil {
+		fmt.Println()
+		fmt.Println("Pull from GHCR failed (common cause: container packages still private).")
+		fmt.Println("  Fix: github.com/users/tanvir-commits/packages → aibox-backend & aibox-web → Public")
+		fmt.Println("  Falling back to local build — this will take longer…")
+		fmt.Println()
+		if err := composeUpBuild(root); err != nil {
+			fmt.Println("Failed to build/start stack:", err)
+			pause()
+			return 1
+		}
+	} else if err := composeUp(root); err != nil {
 		fmt.Println("Failed to start stack:", err)
 		pause()
 		return 1
@@ -156,6 +162,19 @@ func composePull(root string) error {
 
 func composeUp(root string) error {
 	cmd := exec.Command("docker", "compose", "up", "-d")
+	cmd.Dir = root
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
+
+func composeUpBuild(root string) error {
+	cmd := exec.Command(
+		"docker", "compose",
+		"-f", "docker-compose.yml",
+		"-f", "docker-compose.dev.yml",
+		"up", "-d", "--build",
+	)
 	cmd.Dir = root
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

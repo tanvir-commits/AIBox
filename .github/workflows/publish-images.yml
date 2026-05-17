@@ -10,6 +10,7 @@ on:
 permissions:
   contents: read
   packages: write
+  actions: read
 
 env:
   REGISTRY: ghcr.io
@@ -58,3 +59,29 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # Public repo ≠ public GHCR packages by default — anonymous docker pull needs this.
+  make-public:
+    needs: build-push
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    strategy:
+      matrix:
+        package: [aibox-backend, aibox-web]
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const pkg = '${{ matrix.package }}';
+            try {
+              await github.rest.packages.updatePackageVisibilityForAuthenticatedUser({
+                package_type: 'container',
+                package_name: pkg,
+                visibility: 'public',
+              });
+              core.info(`Set ${pkg} to public`);
+            } catch (e) {
+              core.warning(`Could not set ${pkg} public: ${e.message}`);
+              core.info('Manual fix: github.com/users/${{ github.repository_owner }}/packages → Package settings → Public');
+            }

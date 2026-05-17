@@ -6,13 +6,13 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 COMPOSE=(docker compose -f docker-compose.yml)
+DEV_COMPOSE=(docker compose -f docker-compose.yml -f docker-compose.dev.yml)
 MODE=pull
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --build)
       MODE=build
-      COMPOSE+=( -f docker-compose.dev.yml )
       shift
       ;;
     *)
@@ -21,12 +21,20 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ "$MODE" == pull ]]; then
-  echo "Pulling images (Postgres, Qdrant, and prebuilt app images from GHCR)…"
-  "${COMPOSE[@]}" pull
-  echo "Starting containers…"
-  exec "${COMPOSE[@]}" up -d "$@"
+if [[ "$MODE" == build ]]; then
+  echo "Building and starting from local source (dev mode)…"
+  exec "${DEV_COMPOSE[@]}" up -d --build "$@"
 fi
 
-echo "Building and starting from local source (dev mode)…"
-exec "${COMPOSE[@]}" up -d --build "$@"
+echo "Pulling images (Postgres, Qdrant, and prebuilt app images from GHCR)…"
+if ! "${COMPOSE[@]}" pull; then
+  echo ""
+  echo "⚠  Pull from GHCR failed (packages are often private until set to Public)."
+  echo "   Fix: https://github.com/users/$(whoami 2>/dev/null || echo YOU)/packages → aibox-backend / aibox-web → Public"
+  echo "   Falling back to local build (slower, needs internet)…"
+  echo ""
+  exec "${DEV_COMPOSE[@]}" up -d --build "$@"
+fi
+
+echo "Starting containers…"
+exec "${COMPOSE[@]}" up -d "$@"

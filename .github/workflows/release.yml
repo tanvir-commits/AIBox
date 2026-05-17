@@ -37,7 +37,19 @@ jobs:
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          name: PrivateAI Box ${{ github.ref_name }}
+          body: |
+            ## Download (Windows + Docker Desktop)
+
+            1. Install [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/) and start it.
+            2. Download **`privateai-box-${{ github.ref_name }}-windows.zip`** below and unzip.
+            3. Double-click **`PrivateAIBox.exe`** → browser opens at http://localhost:3000
+            4. Sign in: `admin@example.com` / `changeme`
+
+            **Download page:** https://tanvir-commits.github.io/AIBox/
+
+            If image pull fails, the launcher builds locally (slower). Make GHCR packages public:
+            GitHub → Packages → `aibox-backend` / `aibox-web` → Package settings → **Public**.
           files: |
             PrivateAIBox.exe
             privateai-box-${{ github.ref_name }}-windows.zip

@@ -23,9 +23,17 @@ if not exist .env if exist .env.example copy .env.example .env
 echo Pulling images (first run may take several minutes)...
 docker compose pull
 if errorlevel 1 (
-  echo docker compose pull failed.
-  pause
-  exit /b 1
+  echo.
+  echo Pull failed - GHCR packages may be private. Building locally instead (slower)...
+  echo Fix: GitHub -^> Packages -^> aibox-backend / aibox-web -^> Public
+  echo.
+  docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+  if errorlevel 1 (
+    echo docker compose build failed.
+    pause
+    exit /b 1
+  )
+  goto opened
 )
 
 echo Starting stack...
@@ -35,6 +43,8 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
+
+:opened
 
 echo Opening http://localhost:3000
 start "" http://localhost:3000

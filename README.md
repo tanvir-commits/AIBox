@@ -1,11 +1,16 @@
 # PrivateAI Box
 
+[![Download](https://img.shields.io/github/v/release/tanvir-commits/AIBox?label=Download&style=for-the-badge)](https://github.com/tanvir-commits/AIBox/releases/latest)
+[![Download page](https://img.shields.io/badge/Download_page-10b981?style=for-the-badge)](https://tanvir-commits.github.io/AIBox/)
+
 Local document Q&A for a **single organization** per install — upload files, index them locally, chat with **citations**. Ships as **Docker Compose** (no GPU required for the default demo).
+
+> **Download:** [tanvir-commits.github.io/AIBox](https://tanvir-commits.github.io/AIBox/) · [GitHub Releases](https://github.com/tanvir-commits/AIBox/releases/latest)
 
 ## Download and run (Windows, Docker Desktop installed)
 
 1. **Download** the latest release ZIP:  
-   [github.com/tanvir-commits/AIBox/releases](https://github.com/tanvir-commits/AIBox/releases)  
+   [github.com/tanvir-commits/AIBox/releases/latest](https://github.com/tanvir-commits/AIBox/releases/latest)  
    File: `privateai-box-vX.X.X-windows.zip` (includes `PrivateAIBox.exe` + project files).
 
    Or clone: `git clone https://github.com/tanvir-commits/AIBox.git`

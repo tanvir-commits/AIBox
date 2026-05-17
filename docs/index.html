@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PrivateAI Box — Download</title>
+    <meta
+      name="description"
+      content="Local document Q&A with citations. Download for Windows with Docker Desktop."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg-glow bg-glow-a" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-b" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="logo">
+        <span class="logo-mark" aria-hidden="true"></span>
+        <span class="logo-text">PrivateAI Box</span>
+      </div>
+      <nav class="header-nav">
+        <a href="https://github.com/tanvir-commits/AIBox" target="_blank" rel="noopener">GitHub</a>
+        <a href="#requirements">Requirements</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Local · Private · Cited answers</p>
+        <h1>Ask your documents.<br />Keep everything on your machine.</h1>
+        <p class="lead">
+          Upload PDFs and office files, index them locally, and chat with
+          <strong>source citations</strong> — no cloud required for the default demo.
+        </p>
+        <div class="cta-row">
+          <a
+            class="btn btn-primary"
+            href="https://github.com/tanvir-commits/AIBox/releases/latest"
+          >
+            Download for Windows
+          </a>
+          <a
+            class="btn btn-secondary"
+            href="https://github.com/tanvir-commits/AIBox/releases/latest/download/PrivateAIBox.exe"
+          >
+            Launcher only (.exe)
+          </a>
+        </div>
+        <p class="cta-note">
+          Requires <strong>Docker Desktop</strong> (running). First start downloads images (~5–15
+          min).
+        </p>
+      </section>
+
+      <section class="steps" id="steps">
+        <h2>Quick start</h2>
+        <ol class="step-grid">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Install Docker Desktop</h3>
+            <p>
+              <a
+                href="https://docs.docker.com/desktop/setup/install/windows-install/"
+                target="_blank"
+                rel="noopener"
+                >Windows install guide</a
+              >
+              — WSL 2, engine running.
+            </p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Download &amp; unzip</h3>
+            <p>
+              Latest <code>privateai-box-*-windows.zip</code> from
+              <a href="https://github.com/tanvir-commits/AIBox/releases">Releases</a>.
+            </p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>Run PrivateAIBox.exe</h3>
+            <p>Same folder as <code>docker-compose.yml</code> → browser opens automatically.</p>
+          </li>
+          <li>
+            <span class="step-num">4</span>
+            <h3>Sign in &amp; try it</h3>
+            <p>
+              <code>admin@example.com</code> / <code>changeme</code> → Documents → Chat.
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="requirements" id="requirements">
+        <h2>Requirements</h2>
+        <ul class="req-list">
+          <li>Windows 10/11 (Mac/Linux: <code>./scripts/start.sh</code>)</li>
+          <li>Docker Desktop + Compose v2</li>
+          <li>~8 GB RAM · ports 3000 &amp; 8000 free</li>
+          <li>Internet on first run</li>
+        </ul>
+      </section>
+
+      <section class="trouble" id="trouble">
+        <h2>Image pull failed?</h2>
+        <p>
+          GitHub packages may be private until visibility is <strong>Public</strong> (
+          <a href="https://github.com/users/tanvir-commits/packages" target="_blank" rel="noopener"
+            >Packages</a
+          >). The launcher falls back to a slower local build if pull fails.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a href="https://github.com/tanvir-commits/AIBox">Source</a> ·
+        <a href="https://github.com/tanvir-commits/AIBox/releases">Releases</a>
+      </p>
+    </footer>
+  </body>
+</html>
