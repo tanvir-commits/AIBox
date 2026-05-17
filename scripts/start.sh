@@ -29,7 +29,8 @@ cat <<'EOF'
 Starting PrivateAI Box via Docker Compose…
 (Postgres, Qdrant, API, and web UI run inside containers on this machine.)
 
-First start downloads images from the internet (GHCR + Docker Hub). Later starts are faster.
+First start downloads several large images (one at a time). Needs ~8 GB RAM for Docker.
+If the PC freezes, run: scripts\pull-images-safe.sh  then  docker compose up -d
 
   Web UI:  http://localhost:3000
   API:     http://localhost:8000/health

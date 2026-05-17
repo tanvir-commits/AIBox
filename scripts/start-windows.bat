@@ -20,8 +20,8 @@ if errorlevel 1 (
 
 if not exist .env if exist .env.example copy .env.example .env
 
-echo Pulling images (first run may take several minutes)...
-docker compose pull
+echo Pulling images one at a time (first run may take 10-20 min, needs ~8GB RAM for Docker)...
+call scripts\pull-images-safe.bat
 if errorlevel 1 (
   echo.
   echo Pull failed - GHCR packages may be private. Building locally instead (slower)...

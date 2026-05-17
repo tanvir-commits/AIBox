@@ -70,9 +70,10 @@ func runStart() int {
 		fmt.Println("Created .env from .env.example")
 	}
 
-	fmt.Println("Pulling images, then starting PrivateAI Box…")
-	fmt.Println("First run may take several minutes (download or local build).")
-	pullErr := composePull(root)
+	fmt.Println("Pulling images one at a time, then starting Local AI Box…")
+	fmt.Println("First run can take 10–20 min and needs ~8 GB RAM for Docker.")
+	fmt.Println("If the PC freezes, see SHARE_WITH_FRIENDS.txt (safe pull steps).")
+	pullErr := composePullSequential(root)
 	if pullErr != nil {
 		fmt.Println()
 		fmt.Println("Pull from GHCR failed (common cause: container packages still private).")
@@ -152,12 +153,20 @@ Start Docker Desktop and wait until the engine is running, then try again.
 	return nil
 }
 
-func composePull(root string) error {
-	cmd := exec.Command("docker", "compose", "pull")
-	cmd.Dir = root
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
+func composePullSequential(root string) error {
+	services := []string{"postgres", "qdrant", "backend", "web"}
+	var firstErr error
+	for _, svc := range services {
+		fmt.Println("── pull", svc, "──")
+		cmd := exec.Command("docker", "compose", "pull", svc)
+		cmd.Dir = root
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil && firstErr == nil {
+			firstErr = err
+		}
+	}
+	return firstErr
 }
 
 func composeUp(root string) error {

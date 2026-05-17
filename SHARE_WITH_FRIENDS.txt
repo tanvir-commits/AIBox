@@ -9,7 +9,8 @@ YOU NEED
   - Windows 10/11
   - Docker Desktop installed AND running (whale icon — "Engine running")
   - This folder (full project, including docker-compose.yml)
-  - ~8 GB free RAM for first start
+  - ~8 GB free RAM for Docker Desktop (Settings → Resources → 8 GB+ if you can)
+  - ~10 GB free disk for images
 
 OPTION A — Double-click launcher (if PrivateAIBox.exe is in this folder)
   1. Start Docker Desktop; wait until it is running.
@@ -32,6 +33,16 @@ OPTION B — No .exe (batch file)
 TROUBLESHOOT
   - "Docker not running" → open Docker Desktop, wait, try again
   - Port in use → close anything on ports 3000 or 8000
+  - PC froze / "Interrupted" many times on pull → Docker was downloading 4 big
+    images at once. Recovery:
+      1. Reboot if needed, start Docker Desktop only (close other heavy apps)
+      2. Open PowerShell in this folder
+      3. docker compose down
+      4. scripts\pull-images-safe.sh    (pulls one image at a time)
+      5. docker compose up -d
+      6. Open http://localhost:3000
+    Low-RAM test mode: in .env set DEFAULT_EMBEDDING_PROVIDER=mock_embedding
+    then docker compose up -d --force-recreate backend
   - Build errors → send your host the terminal output
 
 OPTIONAL: real AI chat (not required for testing)

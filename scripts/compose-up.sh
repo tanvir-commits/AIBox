@@ -26,8 +26,9 @@ if [[ "$MODE" == build ]]; then
   exec "${DEV_COMPOSE[@]}" up -d --build "$@"
 fi
 
-echo "Pulling images (Postgres, Qdrant, and prebuilt app images from GHCR)…"
-if ! "${COMPOSE[@]}" pull; then
+echo "Pulling images one at a time (easier on RAM than all at once)…"
+echo "Tip: ./scripts/pull-images-safe.sh  then  docker compose up -d"
+if ! "$ROOT/scripts/pull-images-safe.sh"; then
   echo ""
   echo "⚠  Pull from GHCR failed (packages are often private until set to Public)."
   echo "   Fix: https://github.com/users/$(whoami 2>/dev/null || echo YOU)/packages → aibox-backend / aibox-web → Public"
