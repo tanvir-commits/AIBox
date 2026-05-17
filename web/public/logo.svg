@@ -1,29 +1,28 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-label="CiteVault">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" role="img" aria-label="Local AI Box">
   <defs>
-    <linearGradient id="bg" x1="20" y1="12" x2="108" y2="116" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#1a1a1f"/>
-      <stop offset="1" stop-color="#0f0f12"/>
+    <linearGradient id="bg" x1="16" y1="8" x2="112" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1c1c21"/>
+      <stop offset="1" stop-color="#0c0c0f"/>
     </linearGradient>
-    <linearGradient id="glow" x1="64" y1="24" x2="64" y2="104" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#10b981" stop-opacity="0.35"/>
+    <linearGradient id="glow" x1="64" y1="28" x2="64" y2="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10b981" stop-opacity="0.4"/>
       <stop offset="1" stop-color="#10b981" stop-opacity="0"/>
-    </linearGradient>
-    <linearGradient id="doc" x1="40" y1="32" x2="88" y2="96" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#3f3f46"/>
-      <stop offset="1" stop-color="#27272a"/>
     </linearGradient>
   </defs>
   <rect width="128" height="128" rx="28" fill="url(#bg)"/>
-  <rect x="2" y="2" width="124" height="124" rx="26" stroke="#10b981" stroke-opacity="0.4" stroke-width="2"/>
-  <ellipse cx="64" cy="72" rx="44" ry="36" fill="url(#glow)"/>
-  <text x="22" y="78" fill="#10b981" fill-opacity="0.55" font-family="ui-monospace, monospace" font-size="28" font-weight="700">[</text>
-  <text x="98" y="78" fill="#10b981" fill-opacity="0.55" font-family="ui-monospace, monospace" font-size="28" font-weight="700">]</text>
-  <path d="M44 36h36a4 4 0 0 1 4 4v44a4 4 0 0 1-4 4H44a4 4 0 0 1-4-4V40a4 4 0 0 1 4-4Z" fill="url(#doc)" stroke="#52525b" stroke-width="1.5"/>
-  <path d="M80 36v10h10l-10-10Z" fill="#52525b"/>
-  <path d="M50 52h32M50 60h26M50 68h28" stroke="#a1a1aa" stroke-width="2.5" stroke-linecap="round"/>
-  <rect x="54" y="76" width="20" height="14" rx="3" fill="#10b981" fill-opacity="0.25" stroke="#10b981" stroke-width="1.5"/>
-  <path d="M58 81v6M64 79v8M70 81v6" stroke="#34d399" stroke-width="2" stroke-linecap="round"/>
-  <circle cx="88" cy="84" r="10" fill="#18181b" stroke="#10b981" stroke-width="2"/>
-  <rect x="84" y="82" width="8" height="6" rx="1.5" fill="#10b981"/>
-  <path d="M88 82v-3a3 3 0 0 0-3 3" stroke="#10b981" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <rect x="2.5" y="2.5" width="123" height="123" rx="25.5" stroke="#10b981" stroke-opacity="0.45" stroke-width="2"/>
+  <ellipse cx="64" cy="68" rx="40" ry="32" fill="url(#glow)"/>
+  <path
+    d="M32 44h64l8 8v36l-8 8H32l-8-8V52l8-8Z"
+    fill="#27272a"
+    stroke="#52525b"
+    stroke-width="1.5"
+    stroke-linejoin="round"
+  />
+  <path d="M32 44l32 20 32-20" stroke="#10b981" stroke-opacity="0.6" stroke-width="1.5" fill="none"/>
+  <rect x="48" y="58" width="32" height="36" rx="2" fill="#3f3f46" stroke="#71717a" stroke-width="1"/>
+  <path d="M52 66h24M52 72h18M52 78h20" stroke="#a1a1aa" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="88" cy="50" r="11" fill="#18181b" stroke="#10b981" stroke-width="2"/>
+  <circle cx="88" cy="50" r="4" fill="#10b981"/>
+  <path d="M88 39v4M88 57v4M97 50h-4M83 50h-4" stroke="#34d399" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
 </svg>

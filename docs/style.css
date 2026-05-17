@@ -81,34 +81,52 @@ main,
 }
 
 .logo-img {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 24px var(--accent-dim);
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.65rem;
+  box-shadow: 0 0 28px var(--accent-dim);
+  flex-shrink: 0;
 }
 
 .hero-logo {
   display: block;
-  width: 6rem;
-  height: 6rem;
-  margin: 0 auto 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 8px 40px var(--accent-dim);
+  width: 7.5rem;
+  height: 7.5rem;
+  margin: 0 auto 1.25rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 12px 48px var(--accent-dim);
 }
 
 .wordmark {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  line-height: 1.1;
+}
+
+.brand-line {
   font-weight: 700;
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   letter-spacing: -0.03em;
-  line-height: 1;
 }
 
-.wm-cite {
-  color: var(--text);
+.brand-tag {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.02em;
 }
 
-.wm-vault {
+.wm-local {
+  color: var(--muted);
+}
+
+.wm-ai {
   color: var(--accent);
+}
+
+.wm-box {
+  color: var(--text);
 }
 
 .header-nav {

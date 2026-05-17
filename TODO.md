@@ -1,4 +1,4 @@
-# PrivateAI Box — backlog
+# Local AI Box — backlog
 
 ## Friend / beta testing (now)
 

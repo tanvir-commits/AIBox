@@ -21,7 +21,7 @@ def _fake_user() -> User:
 
 def test_system_status_shape() -> None:
     fake = {
-        "app": "PrivateAI Box",
+        "app": "Local AI Box",
         "providers": {"llm": "mock_llm", "embedding": "mock_embedding"},
         "dependencies": {
             "postgres": {"ok": True, "detail": "connected"},

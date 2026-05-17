@@ -1,4 +1,4 @@
-PrivateAI Box — Windows quick start (Docker Desktop already installed)
+Local AI Box — Windows quick start (Docker Desktop already installed)
 ================================================================================
 
 DOWNLOAD

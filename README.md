@@ -1,10 +1,10 @@
-# CiteVault
+# Local AI Box
 
 <p align="center">
-  <img src="web/public/logo.svg" alt="CiteVault" width="120" />
+  <img src="web/public/logo.svg" alt="Local AI Box" width="120" />
 </p>
 
-<p align="center"><strong>Ask your documents. Keep everything on your machine.</strong></p>
+<p align="center"><strong>Local document AI — ask your files, keep everything on your machine.</strong></p>
 
 [![Download](https://img.shields.io/github/v/release/tanvir-commits/AIBox?label=Download&style=for-the-badge)](https://github.com/tanvir-commits/AIBox/releases/latest)
 [![Download page](https://img.shields.io/badge/Download_page-10b981?style=for-the-badge)](https://tanvir-commits.github.io/AIBox/)
