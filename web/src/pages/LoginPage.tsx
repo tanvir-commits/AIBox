@@ -38,8 +38,11 @@ export function LoginPage() {
       <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-900/50 p-8 shadow-xl">
         <div className="flex flex-col items-center text-center">
           <img src="/logo.png" alt="" className="h-16 w-16 rounded-2xl shadow-lg shadow-emerald-500/10" width={64} height={64} />
-          <h1 className="mt-4 text-2xl font-semibold tracking-tight">PrivateAI Box</h1>
-          <p className="mt-2 text-sm text-zinc-400">Sign in to your appliance.</p>
+          <h1 className="mt-4 text-2xl font-semibold tracking-tight">
+            <span className="text-zinc-100">Cite</span>
+            <span className="text-emerald-400">Vault</span>
+          </h1>
+          <p className="mt-2 text-sm text-zinc-400">Private document Q&amp;A on your network.</p>
         </div>
         <form className="mt-8 space-y-4 text-left" onSubmit={onSubmit}>
           <div>

@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PrivateAI Box — Download</title>
+    <title>CiteVault — Download</title>
     <meta
       name="description"
-      content="Local document Q&A with citations. Download for Windows with Docker Desktop."
+      content="CiteVault: local document Q&A with citations. Download for Windows with Docker Desktop."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,8 +15,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" type="image/png" href="logo.png" />
-    <link rel="icon" type="image/svg+xml" href="logo.svg" />
+    <link rel="icon" href="logo.svg" type="image/svg+xml" />
+    <link rel="icon" href="logo.png" type="image/png" />
   </head>
   <body>
     <div class="bg-glow bg-glow-a" aria-hidden="true"></div>
@@ -24,8 +24,10 @@
 
     <header class="site-header">
       <div class="logo">
-        <img class="logo-img" src="logo.png" alt="" width="40" height="40" />
-        <span class="logo-text">PrivateAI Box</span>
+        <img class="logo-img" src="logo.svg" alt="" width="40" height="40" decoding="async" />
+        <span class="wordmark" aria-label="CiteVault">
+          <span class="wm-cite">Cite</span><span class="wm-vault">Vault</span>
+        </span>
       </div>
       <nav class="header-nav">
         <a href="https://github.com/tanvir-commits/AIBox" target="_blank" rel="noopener">GitHub</a>
@@ -35,12 +37,12 @@
 
     <main>
       <section class="hero">
-        <img class="hero-logo" src="logo.png" alt="" width="96" height="96" />
+        <img class="hero-logo" src="logo.svg" alt="" width="112" height="112" decoding="async" />
         <p class="eyebrow">Local · Private · Cited answers</p>
         <h1>Ask your documents.<br />Keep everything on your machine.</h1>
         <p class="lead">
-          Upload PDFs and office files, index them locally, and chat with
-          <strong>source citations</strong> — no cloud required for the default demo.
+          <strong>CiteVault</strong> indexes your PDFs and office files locally — chat with
+          <strong>source citations</strong>, no cloud required for the default demo.
         </p>
         <div class="cta-row">
           <a
@@ -88,8 +90,11 @@
           </li>
           <li>
             <span class="step-num">3</span>
-            <h3>Run PrivateAIBox.exe</h3>
-            <p>Same folder as <code>docker-compose.yml</code> → browser opens automatically.</p>
+            <h3>Run the launcher</h3>
+            <p>
+              Double-click <code>PrivateAIBox.exe</code> (same folder as
+              <code>docker-compose.yml</code>).
+            </p>
           </li>
           <li>
             <span class="step-num">4</span>

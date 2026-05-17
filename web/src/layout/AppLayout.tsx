@@ -28,7 +28,10 @@ export function AppLayout() {
               height={32}
             />
             <div className="min-w-0">
-              <div className="text-sm font-semibold tracking-tight">PrivateAI Box</div>
+              <div className="text-sm font-semibold tracking-tight">
+                <span className="text-zinc-100">Cite</span>
+                <span className="text-emerald-400">Vault</span>
+              </div>
               <div className="truncate text-xs text-zinc-500">{user?.email}</div>
             </div>
           </div>

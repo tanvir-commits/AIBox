@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    app_name: str = "PrivateAI Box"
+    app_name: str = "CiteVault"
     database_url: str = "postgresql://privateai:privateai@localhost:5432/privateai"
     qdrant_url: str = "http://localhost:6333"
     default_llm_provider: str = "mock_llm"

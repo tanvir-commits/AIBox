@@ -96,10 +96,19 @@ main,
   box-shadow: 0 8px 40px var(--accent-dim);
 }
 
-.logo-text {
+.wordmark {
   font-weight: 700;
-  font-size: 1.05rem;
-  letter-spacing: -0.02em;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.wm-cite {
+  color: var(--text);
+}
+
+.wm-vault {
+  color: var(--accent);
 }
 
 .header-nav {
