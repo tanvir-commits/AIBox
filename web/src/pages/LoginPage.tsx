@@ -36,9 +36,12 @@ export function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 text-zinc-100">
       <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-900/50 p-8 shadow-xl">
-        <h1 className="text-2xl font-semibold tracking-tight">PrivateAI Box</h1>
-        <p className="mt-2 text-sm text-zinc-400">Sign in to your appliance.</p>
-        <form className="mt-8 space-y-4" onSubmit={onSubmit}>
+        <div className="flex flex-col items-center text-center">
+          <img src="/logo.png" alt="" className="h-16 w-16 rounded-2xl shadow-lg shadow-emerald-500/10" width={64} height={64} />
+          <h1 className="mt-4 text-2xl font-semibold tracking-tight">PrivateAI Box</h1>
+          <p className="mt-2 text-sm text-zinc-400">Sign in to your appliance.</p>
+        </div>
+        <form className="mt-8 space-y-4 text-left" onSubmit={onSubmit}>
           <div>
             <label className="block text-xs font-medium uppercase tracking-wide text-zinc-500">
               Email

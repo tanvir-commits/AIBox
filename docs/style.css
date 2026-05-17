@@ -80,12 +80,20 @@ main,
   gap: 0.75rem;
 }
 
-.logo-mark {
-  width: 2rem;
-  height: 2rem;
+.logo-img {
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 0.5rem;
-  background: linear-gradient(135deg, var(--accent), #059669);
   box-shadow: 0 0 24px var(--accent-dim);
+}
+
+.hero-logo {
+  display: block;
+  width: 6rem;
+  height: 6rem;
+  margin: 0 auto 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 40px var(--accent-dim);
 }
 
 .logo-text {

@@ -19,8 +19,19 @@ export function AppLayout() {
     <div className="flex min-h-screen bg-zinc-950 text-zinc-100">
       <aside className="flex w-56 flex-col border-r border-zinc-800 bg-zinc-900/60">
         <div className="border-b border-zinc-800 px-4 py-4">
-          <div className="text-sm font-semibold tracking-tight">PrivateAI Box</div>
-          <div className="mt-1 truncate text-xs text-zinc-500">{user?.email}</div>
+          <div className="flex items-center gap-2.5">
+            <img
+              src="/logo.svg"
+              alt=""
+              className="h-8 w-8 shrink-0 rounded-lg"
+              width={32}
+              height={32}
+            />
+            <div className="min-w-0">
+              <div className="text-sm font-semibold tracking-tight">PrivateAI Box</div>
+              <div className="truncate text-xs text-zinc-500">{user?.email}</div>
+            </div>
+          </div>
         </div>
         <nav className="flex flex-1 flex-col gap-0.5 p-2">
           {nav.map((item) => (
