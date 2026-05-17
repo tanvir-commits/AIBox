@@ -6,7 +6,7 @@
     <title>Local AI Box — Download</title>
     <meta
       name="description"
-      content="Local AI Box: local document Q&A with citations. Download for Windows with Docker Desktop."
+      content="Local AI Box: local document Q&A with citations. Download for Windows or Ubuntu with Docker."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +15,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="logo.svg" type="image/svg+xml" />
     <link rel="icon" href="logo.png" type="image/png" />
   </head>
   <body>
@@ -24,7 +23,7 @@
 
     <header class="site-header">
       <div class="logo">
-        <img class="logo-img" src="logo.svg" alt="" width="44" height="44" decoding="async" />
+        <img class="logo-img" src="logo.png" alt="" width="44" height="44" decoding="async" />
         <span class="wordmark" aria-label="Local AI Box">
           <span class="brand-line">
             <span class="wm-local">Local </span><span class="wm-ai">AI </span><span class="wm-box">Box</span>
@@ -33,43 +32,60 @@
         </span>
       </div>
       <nav class="header-nav">
-        <a href="https://github.com/tanvir-commits/AIBox" target="_blank" rel="noopener">GitHub</a>
+        <a href="#windows">Windows</a>
+        <a href="#ubuntu">Ubuntu</a>
         <a href="#requirements">Requirements</a>
+        <a href="https://github.com/tanvir-commits/AIBox" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </header>
 
     <main>
       <section class="hero">
-        <img class="hero-logo" src="logo.svg" alt="" width="112" height="112" decoding="async" />
+        <img class="hero-logo" src="logo.png" alt="" width="112" height="112" decoding="async" />
         <p class="eyebrow">Local LLM · Your files · Cited answers</p>
         <h1>Ask your documents.<br />Keep everything on your machine.</h1>
         <p class="lead">
           <strong>Local AI Box</strong> runs on your PC — upload PDFs and office files, index them
-          locally, and chat with <strong>source citations</strong>. No cloud required for the default
-          demo.
+          locally, and chat with <strong>source citations</strong>. Requires
+          <strong>Docker</strong> (install once per machine).
         </p>
-        <div class="cta-row">
+        <p class="platform-pick">Choose your platform:</p>
+        <div class="cta-row cta-row-platforms">
           <a
             class="btn btn-primary"
             href="https://github.com/tanvir-commits/AIBox/releases/latest"
           >
-            Download for Windows
+            Windows download
           </a>
+          <a class="btn btn-primary btn-ubuntu" href="#ubuntu">Ubuntu instructions</a>
+        </div>
+        <div class="cta-row cta-row-secondary">
           <a
             class="btn btn-secondary"
             href="https://github.com/tanvir-commits/AIBox/releases/latest/download/PrivateAIBox.exe"
           >
-            Launcher only (.exe)
+            Windows launcher only (.exe)
+          </a>
+          <a
+            class="btn btn-secondary"
+            href="https://github.com/tanvir-commits/AIBox/releases/latest"
+          >
+            All releases
           </a>
         </div>
         <p class="cta-note">
-          Requires <strong>Docker Desktop</strong> (running). First start downloads images (~5–15
-          min).
+          First start downloads Docker images (~10–20 min). You need Docker installed and running
+          before launching.
         </p>
       </section>
 
-      <section class="steps" id="steps">
-        <h2>Quick start</h2>
+      <section class="steps platform-section" id="windows">
+        <h2>Windows — quick start</h2>
+        <p class="section-lead">
+          Download <code>privateai-box-*-windows.zip</code> from
+          <a href="https://github.com/tanvir-commits/AIBox/releases">Releases</a>, then double-click
+          <code>PrivateAIBox.exe</code>.
+        </p>
         <ol class="step-grid">
           <li>
             <span class="step-num">1</span>
@@ -81,30 +97,89 @@
                 rel="noopener"
                 >Windows install guide</a
               >
-              — WSL 2, engine running.
+              — start it and wait until the engine is running.
             </p>
           </li>
           <li>
             <span class="step-num">2</span>
             <h3>Download &amp; unzip</h3>
             <p>
-              Latest <code>privateai-box-*-windows.zip</code> from
-              <a href="https://github.com/tanvir-commits/AIBox/releases">Releases</a>.
+              <a href="https://github.com/tanvir-commits/AIBox/releases/latest">Latest release</a>
+              → <code>privateai-box-*-windows.zip</code>
             </p>
           </li>
           <li>
             <span class="step-num">3</span>
-            <h3>Run the launcher</h3>
+            <h3>Run</h3>
+            <p>Double-click <code>PrivateAIBox.exe</code> in the unzipped folder.</p>
+          </li>
+          <li>
+            <span class="step-num">4</span>
+            <h3>Sign in</h3>
             <p>
-              Double-click <code>PrivateAIBox.exe</code> (same folder as
-              <code>docker-compose.yml</code>).
+              Browser opens <code>http://localhost:3000</code> —
+              <code>admin@example.com</code> / <code>changeme</code> → Documents → Chat.
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="steps platform-section platform-ubuntu" id="ubuntu">
+        <h2>Ubuntu — quick start</h2>
+        <p class="section-lead">
+          Download <code>privateai-box-*-ubuntu.tar.gz</code> from
+          <a href="https://github.com/tanvir-commits/AIBox/releases">Releases</a> (on the latest
+          tagged release), or
+          <a href="https://github.com/tanvir-commits/AIBox/archive/refs/heads/main.zip">clone the repo</a>.
+          Then double-click <code>localaibox</code> or use the app menu shortcut.
+        </p>
+        <ol class="step-grid">
+          <li>
+            <span class="step-num">1</span>
+            <h3>Install Docker (one-time)</h3>
+            <p>
+              Extract the tarball, open a terminal in that folder, run:
+              <code>./scripts/install-docker-ubuntu.sh</code> then
+              <code>newgrp docker</code> (or log out and back in).
+            </p>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <h3>Download the app</h3>
+            <p>
+              <a href="https://github.com/tanvir-commits/AIBox/releases/latest">Releases</a> →
+              <code>privateai-box-*-ubuntu.tar.gz</code>
+              <br />
+              <span class="muted-inline"
+                >Not on Releases yet? Use
+                <code>git clone https://github.com/tanvir-commits/AIBox.git</code> and
+                <code>./scripts/build-launcher.sh</code> to create <code>localaibox</code>.</span
+              >
+            </p>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <h3>App menu shortcut (optional, one-time)</h3>
+            <p>
+              <code>./scripts/install-desktop-entry.sh</code> → find
+              <strong>Local AI Box</strong> in the Ubuntu app grid.
             </p>
           </li>
           <li>
             <span class="step-num">4</span>
-            <h3>Sign in &amp; try it</h3>
+            <h3>Run</h3>
             <p>
-              <code>admin@example.com</code> / <code>changeme</code> → Documents → Chat.
+              Double-click <code>localaibox</code> in Files (allow “Run” / mark executable if asked),
+              or launch from the app menu. Browser:
+              <code>http://localhost:3000</code>
+            </p>
+          </li>
+          <li>
+            <span class="step-num">5</span>
+            <h3>Sign in &amp; stop</h3>
+            <p>
+              <code>admin@example.com</code> / <code>changeme</code> → Documents → Chat.<br />
+              Stop: <code>./localaibox -stop</code> or app menu → <strong>Local AI Box (Stop)</strong>.
             </p>
           </li>
         </ol>
@@ -113,10 +188,10 @@
       <section class="requirements" id="requirements">
         <h2>Requirements</h2>
         <ul class="req-list">
-          <li>Windows 10/11 (Mac/Linux: <code>./scripts/start.sh</code>)</li>
-          <li>Docker Desktop + Compose v2</li>
-          <li>~8 GB RAM · ports 3000 &amp; 8000 free</li>
-          <li>Internet on first run</li>
+          <li><strong>Windows 10/11</strong> — Docker Desktop + Compose v2</li>
+          <li><strong>Ubuntu 22.04 / 24.04</strong> — Docker Engine + Compose v2</li>
+          <li>~8 GB RAM · ~10 GB disk · ports 3000 &amp; 8000 free</li>
+          <li>Internet on first run (image download)</li>
         </ul>
       </section>
 
@@ -134,7 +209,8 @@
     <footer class="site-footer">
       <p>
         <a href="https://github.com/tanvir-commits/AIBox">Source</a> ·
-        <a href="https://github.com/tanvir-commits/AIBox/releases">Releases</a>
+        <a href="https://github.com/tanvir-commits/AIBox/releases">Releases</a> ·
+        <a href="https://github.com/tanvir-commits/AIBox/blob/main/SHARE_UBUNTU.txt">Ubuntu handout (txt)</a>
       </p>
     </footer>
   </body>

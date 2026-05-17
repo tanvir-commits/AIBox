@@ -1,0 +1,49 @@
+Local AI Box — Ubuntu quick start
+=================================
+
+WHAT YOU NEED
+  - Ubuntu 22.04 or 24.04 (desktop or server)
+  - ~8 GB RAM, ~10 GB free disk
+  - Ports 3000 and 8000 free on this machine
+
+OPTION A — Clone from GitHub (recommended)
+  1. Install Docker (one-time):
+       git clone https://github.com/tanvir-commits/AIBox.git
+       cd AIBox
+       ./scripts/install-docker-ubuntu.sh
+       newgrp docker    # or log out and back in
+
+  2. Start the app:
+       ./scripts/start.sh
+
+  3. Browser: http://localhost:3000
+     Sign in: admin@example.com / changeme
+
+  4. Documents → upload a file → Chat
+
+  5. Stop: ./scripts/start.sh --stop
+
+OPTION B — Release tarball (download & launch, minimal terminal)
+  1. Download privateai-box-vX.X.X-ubuntu.tar.gz from GitHub Releases
+  2. Extract to e.g. ~/LocalAIBox
+  3. ONE-TIME (terminal): ./scripts/install-docker-ubuntu.sh  then  newgrp docker
+  4. ONE-TIME (terminal): ./scripts/install-desktop-entry.sh
+  5. App menu → "Local AI Box" (or double-click localaibox in the folder)
+  6. Stop: app menu → "Local AI Box (Stop)"
+
+  Without desktop shortcuts: double-click localaibox in Files (mark executable if asked).
+
+OPTION C — Already have Docker Engine
+  git clone https://github.com/tanvir-commits/AIBox.git && cd AIBox
+  ./scripts/check_env.sh
+  ./scripts/start.sh
+
+TROUBLESHOOTING
+  - permission denied on docker → newgrp docker  (or add user to docker group)
+  - pull fails / slow → ./scripts/pull-images-safe.sh  then  docker compose up -d
+  - low RAM → set DEFAULT_EMBEDDING_PROVIDER=mock_embedding in .env
+  - headless server → no browser auto-open; use http://YOUR_SERVER_IP:3000
+    (may need to bind ports in docker-compose / firewall)
+
+OPTIONAL — real local LLM
+  - Install Ollama on the host, pull a model, set DEFAULT_LLM_PROVIDER=ollama in .env
