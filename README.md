@@ -5,7 +5,7 @@
 
 Local document Q&A for a **single organization** per install — upload files, index them locally, chat with **citations**. Ships as **Docker Compose** (no GPU required for the default demo).
 
-> **Download:** [tanvir-commits.github.io/AIBox](https://tanvir-commits.github.io/AIBox/) · [GitHub Releases](https://github.com/tanvir-commits/AIBox/releases/latest)
+> **Download:** [GitHub Releases](https://github.com/tanvir-commits/AIBox/releases/latest) · [Download page](https://tanvir-commits.github.io/AIBox/) (enable Pages once — see [docs/OWNER_SETUP.md](docs/OWNER_SETUP.md))
 
 ## Download and run (Windows, Docker Desktop installed)
 
