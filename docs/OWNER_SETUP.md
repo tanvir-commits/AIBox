@@ -4,13 +4,15 @@ Do these once so friends can pull images and use the download page.
 
 ## 1. GitHub Pages (download site)
 
+**URL:** https://tanvir-commits.github.io/AIBox/
+
+If you see **404**, Pages is not enabled yet:
+
 **Settings → Pages → Build and deployment → Source:** `GitHub Actions`
 
-After the next push to `main`, the site will be at:
+Then run the **Deploy download page** workflow (Actions tab) or push a change under `docs/`.
 
-**https://tanvir-commits.github.io/AIBox/**
-
-Set **Settings → General → Website** to that URL (shows on the repo home).
+Optional: **Settings → General → Website** → `https://tanvir-commits.github.io/AIBox/`
 
 ## 2. Public container packages (fixes `docker pull` / exe pull)
 
